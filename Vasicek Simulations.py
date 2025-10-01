@@ -1,4 +1,3 @@
-#%%
 import numpy as np 
 import matplotlib.pyplot as plt
 
@@ -17,6 +16,7 @@ def vasicek_EM(alpha, b, sigma, r0, T, N):
     r_t = np.zeros(N)
     r_t[0] = r0
     for t in range(0,N-1): 
+        # Using Euler Maruyama for speed
         r_t[t+1] = r_t[t] + alpha*(b - r_t[t])*delta_t + sigma*np.sqrt(delta_t)*np.random.standard_normal()
 
     return(r_t)
@@ -32,7 +32,6 @@ N = 10000
 pf = 0.25
 #print(vasicek_EM(alpha,b,sigma,r0,T,N))
 
-# %%
 def plot_Vasicek(n, alpha, b, sigma, r0, T, N): 
     delta_t = T/N
     time = np.arange(0,T,delta_t)
@@ -65,9 +64,9 @@ for j in range(0,N):
     mean = np.mean(paths[:,j])
     curve[j] = mean
 
-np.savetxt("C:/Users/Human/Desktop/Honours S2/WTW 762 Financial Engineering/CVA_Project/CVA_Code/Mean_Path_Alt.txt", curve)
+np.savetxt("C:/Users/Mean_Path_Alt.txt", curve)
 
-#%%
+
 T = [0.25*i for i in range(1,int(T/pf))]
 
 for j in T: 
@@ -77,18 +76,17 @@ for j in T:
         paths[i,:] = vi
     
 
-# %%
+# Plotting Some Paths and b of the  Vasicek Model
 n= 10
 times = np.arange(0,T,(T/N))
-flRates = np.loadtxt("C:/Users/Human/Desktop/Honours S2/WTW 762 Financial Engineering/CVA_Project/CVA_Code/Mean_Path_10000.txt")
 plot_Vasicek(n,alpha,b,sigma,r0,T,N)
 b_ = [b for i in times]
 plt.plot(times,b_, color = "black", linewidth = 2, label = "Long-Term Mean (b)")
 plt.legend()
 plt.show()
-# %%
+
 # Constructing the Yield Curve
-r_ts = np.loadtxt("C:/Users/Human/Desktop/Honours S2/WTW 762 Financial Engineering/CVA_Project/CVA_Code/Mean_Path_Alt.txt")
+r_ts = np.loadtxt("C:/CVA_Code/Mean_Path_Alt.txt")
 pers = int(T/pf)
 t = [pf*i for i in range(1,pers +1)]
 y = np.zeros(pers)
@@ -99,6 +97,7 @@ for i in range(0,pers):
     P = A*np.exp(-B*r_ts[i])
     y[i] = -(np.log(P))/t[i]
 
+np.savetxt("C:/Users/Human/Desktop/Honours S2/WTW 762 Financial Engineering/CVA_Project/CVA_Code/Yield_Curve_Alt.txt", y)
 
 plt.plot(t,y, color = "blue", marker = 'o', mfc = 'orange',mec = 'orange', ms = 5)
 plt.title("Yield Curve for Simulated Short Rates (Vasicek Model)")
@@ -108,7 +107,3 @@ plt.grid()
 plt.show()
 
 
-
-#np.savetxt("C:/Users/Human/Desktop/Honours S2/WTW 762 Financial Engineering/CVA_Project/CVA_Code/Yield_Curve_Alt.txt", y)
-
-# %%
