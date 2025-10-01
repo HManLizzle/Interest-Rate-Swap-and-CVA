@@ -64,11 +64,8 @@ for i in range(0,pers):
 m = 40
 r_fi = 0.060452
 tau = 0.25
-V_s = L*sum(tau*DF[2:m+1]*(-fwd_rate[1:m] + r_fi))
-print("Swap Val Alt = ", V_s)
+V = L*(DF[m]- DF[0])+L*np.sum(tau*r_fi*DF[1:m+1])
 
-V2 = np.sum(DF[1:m+1]*L*tau*(-fwd_rate[0:m] + r_fi))
-V3 = L*(DF[m]- DF[0])+L*np.sum(tau*r_fi*DF[1:m+1])
-print("V2 = ", V2)
-print("V3 = ", V3)
+print("V = ", V)
 # %%
+
