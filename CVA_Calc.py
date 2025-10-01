@@ -17,7 +17,7 @@ notional = 1000000  # Notional amount (scale to 1000000 if needed)
 h = 0.083333  # Hazard rate
 R = 0.5       # Recovery rate
 
-# Simulate short rate paths using exact Vasicek solution
+# Simulate short rate paths using the exact Vasicek solution
 dt = delta
 exp_alpha_dt = np.exp(-alpha * dt)
 var_term = sigma ** 2 * (1 - np.exp(-2 * alpha * dt)) / (2 * alpha)
@@ -26,18 +26,6 @@ r = np.zeros((n_paths, n_steps + 1))
 r[:, 0] = r0
 for i in range(1, n_steps + 1):
     r[:, i] = r[:, i-1] * exp_alpha_dt + b * (1 - exp_alpha_dt) + std * np.random.normal(0, 1, n_paths)
-
-"""
-# Plot sample of simulated interest rate paths (as required in Part 1)
-plt.figure(figsize=(10, 6))
-plt.plot(t, r[:5].T)  # Plot first 5 paths
-plt.xlabel('Time (years)')
-plt.ylabel('Short Rate')
-plt.title('Simulated Interest Rate Paths under Vasicek Model')
-plt.grid(True)
-plt.show()
-"""
-
 
 # Function to compute B(tau)
 def B(alpha, tau):
@@ -124,3 +112,4 @@ plt.grid(True)
 plt.legend()
 plt.show()
 # %%
+
